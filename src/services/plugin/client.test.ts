@@ -2,12 +2,9 @@ import { LobeChatPluginManifest } from '@lobehub/chat-plugin-sdk';
 import { eq } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { PluginModel } from '@/database/_deprecated/models/plugin';
-import { DB_Plugin } from '@/database/_deprecated/schemas/plugin';
 import { clientDB } from '@/database/client/db';
 import { migrate } from '@/database/client/migrate';
-import { files, installedPlugins, sessions, topics, users } from '@/database/schemas';
-import { ChatMessage } from '@/types/message';
+import { installedPlugins, users } from '@/database/schemas';
 import { LobeTool } from '@/types/tool';
 import { LobeToolCustomPlugin } from '@/types/tool/plugin';
 
