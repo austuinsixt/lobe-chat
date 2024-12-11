@@ -15,21 +15,25 @@ export class ClientService implements IUserService {
   private userModel: UserModel;
   private messageModel: MessageModel;
   private sessionModel: SessionModel;
+  private userId: string;
 
   constructor(userId: string) {
     this.preferenceStorage = new AsyncLocalStorage('LOBE_PREFERENCE');
     this.userModel = new UserModel(clientDB as any, userId);
+    this.userId = userId;
     this.messageModel = new MessageModel(clientDB as any, userId);
     this.sessionModel = new SessionModel(clientDB as any, userId);
   }
 
   async getUserState(): Promise<UserInitializationState> {
-    const user = await this.userModel.getUserState();
+    const state = await this.userModel.getUserState();
+    const user = await UserModel.findById(clientDB as any, this.userId);
     const messageCount = await this.messageModel.count();
     const sessionCount = await this.sessionModel.count();
 
     return {
-      ...user,
+      ...state,
+      avatar: user?.avatar as string,
       canEnablePWAGuide: messageCount >= 4,
       canEnableTrace: messageCount >= 4,
       hasConversation: messageCount > 0 || sessionCount > 0,
